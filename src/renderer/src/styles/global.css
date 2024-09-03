@@ -2,8 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  overflow: hidden;
+@layer base {
+  html {
+    @apply overflow-hidden;
+  }
 }
 
 @layer utilities {

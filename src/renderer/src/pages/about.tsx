@@ -4,8 +4,7 @@ export function About() {
   const { data: version } = useQuery({
     queryKey: ["version-app"],
     queryFn: async () => {
-      const response = await window.api.getVersion();
-      return response;
+      return await window.api.getVersion();
     },
   });
 

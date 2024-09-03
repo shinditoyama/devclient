@@ -1,28 +1,7 @@
-import { app } from "electron";
+import { dialog } from "electron";
 import { randomUUID } from "node:crypto";
-import fs from "node:fs";
-import path from "node:path";
-import PouchDB from "pouchdb";
 import { Customer, NewCustomer } from "../shared/types/ipc";
-
-// Determinar o caminho base para o banco de dados com base no SO
-let dbPath;
-if (process.platform === "darwin") {
-  dbPath = path.join(app.getPath("appData"), "dev-clients", "my_db");
-} else {
-  dbPath = path.join(app.getPath("userData"), "my_db");
-}
-
-// Verificar e criar o diretório se não existir
-const dbDir = path.dirname(dbPath);
-if (!fs.existsSync(dbDir)) {
-  fs.mkdirSync(dbDir, { recursive: true });
-}
-
-// Inicializar o db
-const db = new PouchDB<Customer>(dbPath);
-
-// ------------------------------------------------------------------
+import { db } from "./db";
 
 // Funcão para buscar todos os clientes
 export async function fetchAllCustomer(): Promise<Customer[]> {
@@ -49,9 +28,7 @@ export async function fetchCustomerById(
 }
 
 // Função para cadastrar cliente
-export async function addCustomer(
-  doc: NewCustomer
-): Promise<PouchDB.Core.Response | void> {
+export async function addCustomer(doc: NewCustomer) {
   const id = randomUUID();
 
   const data: Customer = {
@@ -66,15 +43,26 @@ export async function addCustomer(
 }
 
 // Função para deletar cliente
-export async function deleteCustomer(
-  docId: string
-): Promise<PouchDB.Core.Response | null> {
-  try {
-    const doc = await db.get(docId);
-    const result = await db.remove(doc._id, doc._rev);
-    return result;
-  } catch (err) {
-    console.log("Erro ao deletar cliente", err);
-    return null;
+export async function deleteCustomer(docId: string) {
+  const doc = await db.get(docId);
+
+  const response = dialog.showMessageBoxSync({
+    type: "warning",
+    title: "Excluir Cliente",
+    message: `Tem certeza de que deseja excluir: ${doc.name}?`,
+    detail: "Esta ação não pode ser desfeita.",
+    buttons: ["Cancel", "OK"], // 0 is Cancel, 1 is OK
+    defaultId: 0,
+    cancelId: 0,
+    noLink: true,
+  });
+
+  if (response === 0) {
+    return false;
+  }
+
+  if (response === 1) {
+    await db.remove(doc._id, doc._rev);
+    return true;
   }
 }

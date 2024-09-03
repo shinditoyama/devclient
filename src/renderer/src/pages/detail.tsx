@@ -17,15 +17,11 @@ export function Detail() {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (id: string) => {
-      try {
-        await window.api.deleteCustomer(id);
-      } catch (err) {
-        console.log(err);
-      }
+      const user = await window.api.deleteCustomer(id);
+      if (user) navigate("/");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["customers"] });
-      navigate("/");
     },
   });
 
