@@ -18,7 +18,13 @@ export function Detail() {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (id: string) => {
       const user = await window.api.deleteCustomer(id);
-      if (user) navigate("/");
+      if (user) {
+        new window.Notification("Nova mensagem", {
+          body: `Cliente: ${data?.name} foi excluído com sucesso.`,
+          silent: true,
+        });
+        navigate("/");
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["customers"] });
