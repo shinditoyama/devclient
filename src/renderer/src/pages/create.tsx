@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ArrowLeftIcon } from "lucide-react";
 import { FormEvent, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { NewCustomer } from "~/src/shared/types/ipc";
 
 export function Create() {
@@ -48,16 +49,26 @@ export function Create() {
   }
 
   return (
-    <div className="flex flex-1 flex-col py-12 text-white overflow-y-auto">
-      <section className="flex flex-1 flex-col items-center">
-        <h1 className="text-xl lg:text-2xl font-semibold">Cadastrar cliente</h1>
+    <div className="flex flex-1 flex-col p-10">
+      <div className="flex">
+        <Link to="/" className="flex items-center gap-2 group">
+          <ArrowLeftIcon className="w-6 h-6 group-hover:-translate-x-1 duration-300" />
+          <span>Voltar</span>
+        </Link>
+      </div>
 
-        <form onSubmit={handleAddCustomer} className="w-full max-w-96 mt-4">
+      <section className="flex flex-1 flex-col items-center">
+        <h1 className="text-2xl font-semibold">Cadastrar cliente</h1>
+
+        <form
+          onSubmit={handleAddCustomer}
+          className="w-full max-w-[600px] mt-4"
+        >
           <div className="mb-4">
             <label className="text-lg">Nome:</label>
             <input
               type="text"
-              placeholder="Digite o nome do cliente..."
+              placeholder="Digite o nome..."
               className="w-full h-10 px-2 text-black rounded"
               ref={nameRef}
             />
@@ -67,7 +78,7 @@ export function Create() {
             <label className="text-lg">E-mail:</label>
             <input
               type="email"
-              placeholder="Digite o email do cliente..."
+              placeholder="Digite o email..."
               className="w-full h-10 px-2 text-black rounded"
               ref={emailRef}
             />
@@ -77,30 +88,32 @@ export function Create() {
             <label className="text-lg">Endereço:</label>
             <input
               type="text"
-              placeholder="Digite o endereço do cliente..."
+              placeholder="Digite o endereço..."
               className="w-full h-10 px-2 text-black rounded"
               ref={addressRef}
             />
           </div>
 
-          <div className="mb-4">
-            <label className="text-lg">Telefone:</label>
-            <input
-              type="text"
-              placeholder="Digite o telefone do cliente..."
-              className="w-full h-10 px-2 text-black rounded"
-              ref={phoneRef}
-            />
-          </div>
+          <div className="grid-cols-2 gap-2 md:grid">
+            <div className="mb-4 col-span-1">
+              <label className="text-lg">Telefone:</label>
+              <input
+                type="text"
+                placeholder="Digite o telefone..."
+                className="w-full h-10 px-2 text-black rounded"
+                ref={phoneRef}
+              />
+            </div>
 
-          <div className="mb-8">
-            <label className="text-lg">Cargo:</label>
-            <input
-              type="text"
-              placeholder="Digite o cargo do cliente..."
-              className="w-full h-10 px-2 text-black rounded"
-              ref={roleRef}
-            />
+            <div className="mb-8 col-span-1">
+              <label className="text-lg">Cargo:</label>
+              <input
+                type="text"
+                placeholder="Digite o cargo..."
+                className="w-full h-10 px-2 text-black rounded"
+                ref={roleRef}
+              />
+            </div>
           </div>
 
           <button

@@ -5,7 +5,7 @@ import { queryClient } from "./lib/query";
 import { Layout } from "./components/Layout";
 import { About } from "./pages/about";
 import { Create } from "./pages/create";
-import { Detail } from "./pages/detail";
+import { Edit } from "./pages/edit";
 import { Home } from "./pages/home";
 
 export default function App() {
@@ -17,7 +17,9 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/create" element={<Create />} />
-            <Route path="/customer/:id" element={<Detail />} />
+            {/* <Route path="/customer/:id" element={<Detail />} /> */}
+
+            <Route path="/edit/:id" element={<Edit />} />
           </Route>
         }
       />

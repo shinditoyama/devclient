@@ -24,6 +24,8 @@ const api = {
     ipcRenderer.invoke("fetch-customer-id", docId),
   addCustomer: (doc: NewCustomer): Promise<PouchDB.Core.Response | void> =>
     ipcRenderer.invoke("add-customer", doc),
+  editCustomer: (docId: string, doc: NewCustomer) =>
+    ipcRenderer.invoke("edit-customer", docId, doc),
   deleteCustomer: (docId: string) =>
     ipcRenderer.invoke("delete-customer", docId),
   getVersion: () => ipcRenderer.invoke("get-version"),

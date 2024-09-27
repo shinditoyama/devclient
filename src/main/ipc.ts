@@ -3,6 +3,7 @@ import { Customer } from "../shared/types/ipc";
 import {
   addCustomer,
   deleteCustomer,
+  editCustomer,
   fetchAllCustomer,
   fetchCustomerById,
 } from "./store";
@@ -19,6 +20,11 @@ ipcMain.handle(
 ipcMain.handle(
   "add-customer",
   async (event, doc: Customer) => await addCustomer(doc)
+);
+
+ipcMain.handle(
+  "edit-customer",
+  async (event, docId: string, doc: Customer) => await editCustomer(docId, doc)
 );
 
 ipcMain.handle(

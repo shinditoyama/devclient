@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeftIcon, TrashIcon } from "lucide-react";
+import { ArrowLeftIcon, PencilIcon, TrashIcon } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 export function Detail() {
@@ -66,11 +66,20 @@ export function Detail() {
                 </p>
               )}
 
+              <div className="absolute -top-4 right-16">
+                <button
+                  className="p-2 bg-green-500 hover:bg-green-600 disabled:bg-green-300 rounded-full z-20"
+                  // disabled={isPending}
+                  // onClick={() => mutateAsync(data._id)}
+                >
+                  <PencilIcon className="w-6 h-6" />
+                </button>
+              </div>
               <div className="absolute -top-4 right-4">
                 <button
                   className="p-2 bg-red-500 hover:bg-red-600 disabled:bg-red-300 rounded-full z-20"
                   disabled={isPending}
-                  onClick={() => mutateAsync(data._id)}
+                  onClick={() => mutateAsync(data._id!)}
                 >
                   <TrashIcon className="w-6 h-6" />
                 </button>

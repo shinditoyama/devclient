@@ -42,6 +42,25 @@ export async function addCustomer(doc: NewCustomer) {
     .catch((err) => console.log("Erro ao cadastrar", err));
 }
 
+export async function editCustomer(docId: string, data: NewCustomer) {
+  return db
+    .get(docId)
+    .then(function (doc) {
+      return db.put({
+        _id: doc._id,
+        _rev: doc._rev,
+        name: data.name,
+        email: data.email,
+        address: data.address,
+        phone: data.phone,
+        role: data.role,
+        status: data.status,
+      });
+    })
+    .then((res) => res)
+    .catch((err) => console.log("Erro ao atualizar", err));
+}
+
 // Função para deletar cliente
 export async function deleteCustomer(docId: string) {
   const doc = await db.get(docId);
@@ -51,17 +70,17 @@ export async function deleteCustomer(docId: string) {
     title: "Excluir Cliente",
     message: `Tem certeza de que deseja excluir: ${doc.name}?`,
     detail: "Esta ação não pode ser desfeita.",
-    buttons: ["Cancel", "OK"], // 0 is Cancel, 1 is OK
+    buttons: ["OK", "Cancelar"], // 0 is Cancel, 1 is OK
     defaultId: 0,
-    cancelId: 0,
+    cancelId: 1,
     noLink: true,
   });
 
-  if (response === 0) {
+  if (response === 1) {
     return false;
   }
 
-  if (response === 1) {
+  if (response === 0) {
     await db.remove(doc._id, doc._rev);
     return true;
   }
